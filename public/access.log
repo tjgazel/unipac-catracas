@@ -1,0 +1,4 @@
+127.0.0.1 - - [01/Mar/2019:17:14:43 -0300] "HEAD / HTTP/1.1" 403 196 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36"
+127.0.0.1 - - [01/Mar/2019:17:15:12 -0300] "HEAD / HTTP/1.1" 403 196 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36"
+127.0.0.1 - - [01/Mar/2019:17:15:22 -0300] "GET / HTTP/1.1" 403 502 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36"
+127.0.0.1 - - [01/Mar/2019:17:15:22 -0300] "GET /favicon.ico HTTP/1.1" 403 512 "http://dev.unipac/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36"

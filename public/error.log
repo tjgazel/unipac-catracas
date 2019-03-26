@@ -1,0 +1,4 @@
+[Fri Mar 01 17:14:43.750988 2019] [authz_core:error] [pid 28726] [client 127.0.0.1:49982] AH01630: client denied by server configuration: /gazel/www/midiauai/unipac-catraca/public/
+[Fri Mar 01 17:15:12.052639 2019] [authz_core:error] [pid 28727] [client 127.0.0.1:50030] AH01630: client denied by server configuration: /gazel/www/midiauai/unipac-catraca/public/
+[Fri Mar 01 17:15:22.550967 2019] [authz_core:error] [pid 28728] [client 127.0.0.1:50044] AH01630: client denied by server configuration: /gazel/www/midiauai/unipac-catraca/public/
+[Fri Mar 01 17:15:22.760627 2019] [authz_core:error] [pid 28728] [client 127.0.0.1:50044] AH01630: client denied by server configuration: /gazel/www/midiauai/unipac-catraca/public/favicon.ico, referer: http://dev.unipac/

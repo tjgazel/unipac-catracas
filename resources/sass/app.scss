@@ -1,0 +1,31 @@
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+// Variables Bootstrap
+@import 'variables';
+@import '~bootstrap/scss/bootstrap';
+@import "~toastr/toastr";
+
+
+.navbar-laravel {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+html, body {
+    background-color: #fff;
+}
+
+.calendar {
+    cursor: pointer;
+}
+
+.btn-actions {
+    width: 150px;
+}
+
+.btn-actions a, .btn-actions button {
+    float: right;
+    margin-left: 3px;
+}
