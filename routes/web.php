@@ -15,7 +15,7 @@
     return view('welcome');
 });*/
 
-Route::redirect('/', 'catracas/relatorios', 301);
+Route::redirect('/', 'catracas/relatorios', 302);
 
 Route::name('catracas')->resource('catracas/relatorios', 'CatracasRelatorioController')->only(['index', 'show']);
 Route::resource('catracas', 'CatracasController')->only(['index', 'show']);

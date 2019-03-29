@@ -27,10 +27,9 @@ class CatracasRelatorioController extends Controller
             'search' => $request->get('search') ?? '',
         ]);
 
-
         $http = new Client();
         try {
-            $response = $http->get('http://www.unipacto.com.br/calendarios/diascalendario.php', [
+            $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
                 'query' => [
                     'i' => $form['start']->format('Y-m-d'),
                     'f' => $form['end']->format('Y-m-d')
@@ -44,31 +43,31 @@ class CatracasRelatorioController extends Controller
 
         $diasLetivos = $response->dias;
 
-        if (strlen($form['search']) > 3) {
+        if (strlen($form['search']) > 1) {
             $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->orderBy('nome')->get();
         } else {
             $alunos = Aluno::orderBy('nome')->get();
         }
 
-
-        $alunos = $alunos->map(function ($aluno, $index) use ($form, $diasLetivos) {
+        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
 
             $diasPresentes = 0;
 
-            if ($aluno->getAcessos->whereBetween('MOV_DATAHORA', [$form['start']->format('Y-m-d'), $form['end']->format('Y-m-d')])->count()) {
+            if ($aluno->getAcessos->count()) {
+                $acessos = $aluno->getAcessos->filter(function ($acesso) use ($form) {
+                    return (data_get($acesso, 'MOV_DATAHORA') >= $form['start']) &&
+                        (data_get($acesso, 'MOV_DATAHORA') <= $form['end']);
+                });
 
-                $aluno->acessos = $aluno->getAcessos->whereBetween('MOV_DATAHORA',
-                    [$form['start']->format('Y-m-d'), $form['end']->format('Y-m-d')]);
-
-                $diasAcesso = [];
-                foreach ($aluno->acessos as $acesso) {
-                    if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
-                        $diasAcesso[$acesso->MOV_DATAHORA->year][] = $acesso->MOV_DATAHORA->dayOfYear;
-                        $diasPresentes += 1;
+                if ($acessos->count()) {
+                    $diasAcesso = [];
+                    foreach ($acessos as $acesso) {
+                        if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
+                            $diasAcesso[] = $acesso->MOV_DATAHORA->dayOfYear;
+                            $diasPresentes += 1;
+                        }
                     }
                 }
-            } else {
-                $aluno->acessos = null;
             }
 
             $aluno->faltas = $diasLetivos - $diasPresentes;
@@ -79,7 +78,7 @@ class CatracasRelatorioController extends Controller
                 $aluno->faltas_percentual = 0;
             }
 
-            if (strlen($form['search']) > 3) {
+            if (strlen($form['search']) > 1) {
                 return $aluno;
             } elseif ($aluno->faltas_percentual >= 30) {
                 return $aluno;

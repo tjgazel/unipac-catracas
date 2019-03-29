@@ -61,24 +61,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($alunos as $aluno)
-                    <tr>
-                        <td class="align-middle">{{$aluno->credencial ?? ''}}</td>
-                        <td class="align-middle">{{$aluno->nome ?? ''}}</td>
-                        <td class="align-middle text-center">{{$aluno->periodo ?? ''}}</td>
-                        <td class="align-middle">{{$aluno->curso ?? ''}}</td>
-                        <td class="align-middle text-center">{{$aluno->fixo ?? ''}}</td>
-                        <td class="align-middle text-center">{{$aluno->celular ?? ''}}</td>
-                        <td class="align-middle text-center">{{$aluno->faltas ?? ''}} / {{$diasLetivos}}</td>
-                        <td class="align-middle text-center {{$aluno->faltas_percentual < 60 && $aluno->faltas_percentual > 45 ?
-                            'bg-warning' : $aluno->faltas_percentual >= 60  ? 'bg-danger text-white' : ''}}">
-                            {{$aluno->faltas_percentual}}%
-                        </td>
-                        <td class="align-middle text-center">
-                            <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}"><i class="far fa-paper-plane"></i></a>
-                        </td>
-                    </tr>
-                @endforeach
+                @if($alunos->count())
+                    @foreach($alunos as $aluno)
+                        <tr>
+                            <td class="align-middle">{{$aluno->credencial ?? ''}}</td>
+                            <td class="align-middle">{{$aluno->nome ?? ''}}</td>
+                            <td class="align-middle text-center">{{$aluno->periodo ?? ''}}</td>
+                            <td class="align-middle">{{$aluno->curso ?? ''}}</td>
+                            <td class="align-middle text-center">{{$aluno->fixo ?? ''}}</td>
+                            <td class="align-middle text-center">{{$aluno->celular ?? ''}}</td>
+                            <td class="align-middle text-center">{{$aluno->faltas ?? ''}} / {{$diasLetivos}}</td>
+                            <td class="align-middle text-center @if($aluno->faltas_percentual >= 40 && $aluno->faltas_percentual < 60)
+                                bg-warning @endif @if($aluno->faltas_percentual >= 60) bg-danger text-white @endif">
+                                {{$aluno->faltas_percentual}}%
+                            </td>
+                            <td class="align-middle text-center">
+                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}"><i
+                                        class="far fa-paper-plane"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
