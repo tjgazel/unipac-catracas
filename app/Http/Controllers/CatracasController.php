@@ -60,16 +60,15 @@ class CatracasController extends Controller
     {
         $start = $request->get('start');
         $end = $request->get('end');
-
         $form = [
             'start' => $start ?? Carbon::now()->firstOfMonth()->format('Y-m-d'),
             'end' => $end ?? Carbon::now()->format('Y-m-d')
         ];
 
         $acessos = Acesso::where('CRED_NUMERO', $id)
-            ->whereDate('CRAC_ULTPASSAGEM', '>=', $form['start'])
-            ->whereDate('CRAC_ULTPASSAGEM', '<=', $form['end'])
-            ->orderByDesc('CRAC_ULTPASSAGEM')
+            ->whereDate('MOV_DATAHORA', '>=', $form['start'])
+            ->whereDate('MOV_DATAHORA', '<=', $form['end'])
+            ->orderByDesc('MOV_DATAHORA')
             ->get();
 
         return view('catracas.show', compact(['acessos', 'form', 'id']));

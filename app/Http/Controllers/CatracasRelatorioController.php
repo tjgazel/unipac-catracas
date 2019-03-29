@@ -30,7 +30,7 @@ class CatracasRelatorioController extends Controller
 
         $http = new Client();
         try {
-            $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
+            $response = $http->get('http://www.unipacto.com.br/calendarios/diascalendario.php', [
                 'query' => [
                     'i' => $form['start']->format('Y-m-d'),
                     'f' => $form['end']->format('Y-m-d')
@@ -45,7 +45,7 @@ class CatracasRelatorioController extends Controller
         $diasLetivos = $response->dias;
 
         if (strlen($form['search']) > 3) {
-            $alunos = Aluno::where('nome', 'like', "{$form['search']}%")->orderBy('nome')->get();
+            $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->orderBy('nome')->get();
         } else {
             $alunos = Aluno::orderBy('nome')->get();
         }
@@ -55,16 +55,15 @@ class CatracasRelatorioController extends Controller
 
             $diasPresentes = 0;
 
-            if ($aluno->getAcessos->whereBetween('CRAC_ULTPASSAGEM',
-                [$form['start']->format('Y-m-d'), $form['end']->format('Y-m-d')])->count()) {
+            if ($aluno->getAcessos->whereBetween('MOV_DATAHORA', [$form['start']->format('Y-m-d'), $form['end']->format('Y-m-d')])->count()) {
 
-                $aluno->acessos = $aluno->getAcessos->whereBetween('CRAC_ULTPASSAGEM',
+                $aluno->acessos = $aluno->getAcessos->whereBetween('MOV_DATAHORA',
                     [$form['start']->format('Y-m-d'), $form['end']->format('Y-m-d')]);
 
                 $diasAcesso = [];
                 foreach ($aluno->acessos as $acesso) {
-                    if (!in_array($acesso->CRAC_ULTPASSAGEM->dayOfYear, $diasAcesso)) {
-                        $diasAcesso[$acesso->CRAC_ULTPASSAGEM->year][] = $acesso->CRAC_ULTPASSAGEM->dayOfYear;
+                    if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
+                        $diasAcesso[$acesso->MOV_DATAHORA->year][] = $acesso->MOV_DATAHORA->dayOfYear;
                         $diasPresentes += 1;
                     }
                 }
@@ -93,27 +92,6 @@ class CatracasRelatorioController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -131,45 +109,11 @@ class CatracasRelatorioController extends Controller
         ];
 
         $credAcessos = Acesso::where('CRED_NUMERO', $id)
-            ->whereDate('CRAC_ULTPASSAGEM', '>=', $form['start'])
-            ->whereDate('CRAC_ULTPASSAGEM', '<=', $form['end'])
-            ->orderByDesc('CRAC_ULTPASSAGEM')
+            ->whereDate('MOV_DATAHORA', '>=', $form['start'])
+            ->whereDate('MOV_DATAHORA', '<=', $form['end'])
+            ->orderByDesc('MOV_DATAHORA')
             ->get();
 
         return view('catracas.relatorios.show', compact(['credAcessos', 'form', 'id']));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -9,11 +9,11 @@ class Acesso extends Model
     // CRED_NUMERO, CRAC_ULTPASSAGEM
     protected $connection = 'sqlsrv';
 
-    protected $table = 'CRED_ACESSO';
+    protected $table = 'LOG_CREDENCIAL';
 
     public $timestamps = false;
 
-    protected $dates = ['CRAC_ULTPASSAGEM'];
+    protected $dates = ['MOV_DATAHORA'];
 
     public function getCredencial()
     {

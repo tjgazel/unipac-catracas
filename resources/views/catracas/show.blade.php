@@ -54,8 +54,8 @@
                 <tbody>
                 @foreach($acessos as $acesso)
                     <tr>
-                        <td>{{$acesso->CRAC_ULTPASSAGEM->format('d/m/Y')}}</td>
-                        <td class="text-center">{{$acesso->CRAC_ULTPASSAGEM->format('H:i:s')}}</td>
+                        <td>{{$acesso->MOV_DATAHORA->format('d/m/Y')}}</td>
+                        <td class="text-center">{{$acesso->MOV_DATAHORA->format('H:i:s')}}</td>
                     </tr>
                 @endforeach
                 </tbody>
