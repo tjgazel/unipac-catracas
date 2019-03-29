@@ -57,7 +57,7 @@
                     <th class="text-center"><i class="fas fa-mobile-alt"></i> Celular</th>
                     <th class="text-center"><i class="far fa-calendar-times"></i> Faltas</th>
                     <th class="text-center"><i class="fas fa-percent"></i> Faltas</th>
-                    {{--<th class="text-center"><i class="fas fa-history"></i> Histórico</th>--}}
+                    <th class="text-center"><i class="fas fa-history"></i> Histórico <br> de presença</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,13 +70,13 @@
                         <td class="align-middle text-center">{{$aluno->fixo ?? ''}}</td>
                         <td class="align-middle text-center">{{$aluno->celular ?? ''}}</td>
                         <td class="align-middle text-center">{{$aluno->faltas ?? ''}} / {{$diasLetivos}}</td>
-                        <td class="align-middle text-center {{$aluno->faltas_percentual < 60 && $aluno->faltas_percentual > 45 ? 'bg-warning' :
-                                $aluno->faltas_percentual >= 60  ? 'bg-danger text-white' : ''}}">
+                        <td class="align-middle text-center {{$aluno->faltas_percentual < 60 && $aluno->faltas_percentual > 45 ?
+                            'bg-warning' : $aluno->faltas_percentual >= 60  ? 'bg-danger text-white' : ''}}">
                             {{$aluno->faltas_percentual}}%
                         </td>
-                        {{--<td class="align-middle text-center">
+                        <td class="align-middle text-center">
                             <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}"><i class="far fa-paper-plane"></i></a>
-                        </td>--}}
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
