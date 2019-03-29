@@ -31,7 +31,7 @@ class CatracasController extends Controller
                 ->orderByDesc('CRED_ULTPASSAGEM')
                 ->get();
 
-            $alunos = Aluno::where('nome', 'like', "{$form['search']}%")->get();
+            $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->get();
             $credenciais_aluno = [];
             foreach ($alunos as $aluno) {
                 $credenciais_aluno[] = $aluno->credencial;
