@@ -11,6 +11,8 @@ class Acesso extends Model
 
     protected $table = 'LOG_CREDENCIAL';
 
+    protected $primaryKey = false;
+
     public $timestamps = false;
 
     protected $dates = ['MOV_DATAHORA'];

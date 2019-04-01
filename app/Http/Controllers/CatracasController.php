@@ -19,7 +19,7 @@ class CatracasController extends Controller
     {
         $form = collect([
             'start' => $request->get('start') ? Carbon::createFromTimestamp(strtotime($request->get('start'))) :
-                Carbon::now()->firstOfMonth(),
+                Carbon::now()->addDays(-8),
             'end' => $request->get('end') ? Carbon::createFromTimestamp(strtotime($request->get('end'))) : Carbon::now(),
             'search' => $request->get('search') ?? '',
         ]);
@@ -61,7 +61,7 @@ class CatracasController extends Controller
         $start = $request->get('start');
         $end = $request->get('end');
         $form = [
-            'start' => $start ?? Carbon::now()->firstOfMonth()->format('Y-m-d'),
+            'start' => $start ?? Carbon::now()->addDays(-8)->format('Y-m-d'),
             'end' => $end ?? Carbon::now()->format('Y-m-d')
         ];
 

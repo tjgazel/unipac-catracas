@@ -49,23 +49,26 @@ class CatracasRelatorioController extends Controller
             $alunos = Aluno::orderBy('nome')->get();
         }
 
-        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
+        $acessos = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
+            ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
+            ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
+            ->get();
+
+        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos, $acessos) {
 
             $diasPresentes = 0;
 
-            if ($aluno->getAcessos->count()) {
-                $acessos = $aluno->getAcessos->filter(function ($acesso) use ($form) {
-                    return (data_get($acesso, 'MOV_DATAHORA') >= $form['start']) &&
-                        (data_get($acesso, 'MOV_DATAHORA') <= $form['end']);
-                });
 
-                if ($acessos->count()) {
-                    $diasAcesso = [];
-                    foreach ($acessos as $acesso) {
-                        if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
-                            $diasAcesso[] = $acesso->MOV_DATAHORA->dayOfYear;
-                            $diasPresentes += 1;
-                        }
+            $acessosAluno = $acessos->filter(function ($acesso) use ($aluno) {
+                return $acesso->CRED_NUMERO == $aluno->credencial;
+            });
+
+            if ($acessosAluno->count()) {
+                $diasAcesso = [];
+                foreach ($acessosAluno as $acesso) {
+                    if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
+                        $diasAcesso[] = $acesso->MOV_DATAHORA->dayOfYear;
+                        $diasPresentes += 1;
                     }
                 }
             }
@@ -78,11 +81,10 @@ class CatracasRelatorioController extends Controller
                 $aluno->faltas_percentual = 0;
             }
 
-            if (strlen($form['search']) > 1) {
-                return $aluno;
-            } elseif ($aluno->faltas_percentual >= 30) {
+            if ($aluno->faltas_percentual >= 30) {
                 return $aluno;
             }
+            return $aluno;
         });
 
         $alunos = $alunos->sortByDesc('faltas');
