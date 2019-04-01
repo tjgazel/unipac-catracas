@@ -22,7 +22,7 @@ class CatracasRelatorioController extends Controller
     {
         $form = collect([
             'start' => $request->get('start') ? Carbon::createFromTimestamp(strtotime($request->get('start'))) :
-                Carbon::now()->addDays(-8),
+                Carbon::now()->addDays(-16),
             'end' => $request->get('end') ? Carbon::createFromTimestamp(strtotime($request->get('end'))) : Carbon::now(),
             'search' => $request->get('search') ?? '',
         ]);
@@ -49,21 +49,16 @@ class CatracasRelatorioController extends Controller
             $alunos = Aluno::orderBy('nome')->get();
         }
 
-        $acessos = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
-            ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
-            ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
-            ->get();
-
-        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos, $acessos) {
-
+        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
             $diasPresentes = 0;
 
+            $acessosAluno = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
+                ->where('CRED_NUMERO', $aluno->credencial)
+                ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
+                ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
+                ->get();
 
-            $acessosAluno = $acessos->filter(function ($acesso) use ($aluno) {
-                return $acesso->CRED_NUMERO == $aluno->credencial;
-            });
-
-            if ($acessosAluno->count()) {
+            if (count($acessosAluno)) {
                 $diasAcesso = [];
                 foreach ($acessosAluno as $acesso) {
                     if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
@@ -74,20 +69,17 @@ class CatracasRelatorioController extends Controller
             }
 
             $aluno->faltas = $diasLetivos - $diasPresentes;
-
             if ($aluno->faltas > 0) {
                 $aluno->faltas_percentual = round($aluno->faltas / $diasLetivos * 100, 2);
             } else {
                 $aluno->faltas_percentual = 0;
             }
 
-            if ($aluno->faltas_percentual >= 30) {
-                return $aluno;
-            }
             return $aluno;
-        });
 
-        $alunos = $alunos->sortByDesc('faltas');
+        })->filter(function ($aluno){
+            return $aluno->faltas_percentual >= 40;
+        })->sortByDesc('faltas');
 
         return view('catracas.relatorios.index', compact(['alunos', 'form', 'diasLetivos']));
     }
