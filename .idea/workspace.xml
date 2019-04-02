@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9d95d126-4ba9-44ac-be51-76cf354e345e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Credencial.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Credencial.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/catracas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/catracas/index.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,20 +76,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/catracas/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="286">
-              <caret line="57" column="59" selection-start-line="57" selection-start-column="59" selection-end-line="57" selection-end-column="59" />
+              <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/Credencial.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+            <state relative-caret-position="560">
+              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
             </state>
           </provider>
         </entry>
@@ -182,8 +182,8 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/CatracasRelatorioController.php" />
         <option value="$PROJECT_DIR$/resources/views/catracas/relatorios/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/catracas/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Credencial.php" />
+        <option value="$PROJECT_DIR$/resources/views/catracas/index.blade.php" />
       </list>
     </option>
   </component>
@@ -457,7 +457,7 @@
       <workItem from="1554135750553" duration="12826000" />
       <workItem from="1554211821903" duration="36000" />
       <workItem from="1554224729565" duration="875000" />
-      <workItem from="1554227046535" duration="1920000" />
+      <workItem from="1554227046535" duration="2374000" />
     </task>
     <task id="LOCAL-00001" summary="alteração da tabela acessos e seus atributos.">
       <created>1553879455689</created>
@@ -522,7 +522,21 @@
       <option name="project" value="LOCAL" />
       <updated>1554228382912</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="update 3">
+      <created>1554228981076</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1554228981076</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update 3">
+      <created>1554229315099</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1554229315099</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -546,7 +560,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="172447000" />
+    <option name="totallyTimeSpent" value="172901000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -900,13 +914,6 @@
     <entry file="file://$PROJECT_DIR$/WhatsApp Image 2019-03-08 at 14.24.31 (1).jpeg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/catracas/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="57" column="59" selection-start-line="57" selection-start-column="59" selection-end-line="57" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/CatracasRelatorioController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="760">
@@ -936,8 +943,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Credencial.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+        <state relative-caret-position="560">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/catracas/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
         </state>
       </provider>
     </entry>

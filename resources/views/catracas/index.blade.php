@@ -55,7 +55,7 @@
                 @foreach($credenciais as $credencial)
                         <tr>
                             <td>{{$credencial->CRED_NUMERO ?? ''}}</td>
-                            <td>{{$credencial->getAluno->id ?? ''}}-{{$credencial->getAluno->nome ?? ''}}</td>
+                            <td>{{$credencial->getAluno->nome ?? ''}}</td>
                             <td class="text-center">{{$credencial->getAluno->curso ?? ''}}</td>
                             <td class="text-center">{{$credencial->getAluno->periodo ?? ''}}</td>
                             <td class="text-center">
