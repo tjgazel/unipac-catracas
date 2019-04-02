@@ -58,6 +58,7 @@ class CatracasController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $id = (int) $id;
         $start = $request->get('start');
         $end = $request->get('end');
         $form = [
