@@ -16,6 +16,10 @@ class Credencial extends Model
 
     protected $dates = ['CRED_ULTPASSAGEM'];
 
+    public function getCRED_NUMEROAtribute($value)
+    {
+        return sprintf("%012d", $value);
+    }
 
     public function getAcessos()
     {
