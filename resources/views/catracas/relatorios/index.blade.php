@@ -55,9 +55,9 @@
                     <th>Curso</th>
                     <th class="text-center"><i class="fas fa-phone"></i> Fixo</th>
                     <th class="text-center"><i class="fas fa-mobile-alt"></i> Celular</th>
-                    <th class="text-center" style="width: 120px;"><i class="far fa-calendar-times"></i> Faltas</th>
-                    <th class="text-center" style="width: 120px;"><i class="fas fa-percent"></i> Faltas</th>
-                    <th class="text-center" style="width: 120px;"><i class="fas fa-history"></i> Histórico <br> de presença</th>
+                    <th class="text-center" style="width: 100px;"><i class="far fa-calendar-times"></i> Faltas</th>
+                    <th class="text-center" style="width: 100px;"><i class="fas fa-percent"></i> Faltas</th>
+                    <th class="text-center" style="width: 110px;"><i class="fas fa-history"></i> Histórico <br> de presença</th>
                 </tr>
                 </thead>
                 <tbody>
