@@ -53,7 +53,7 @@ class CatracasRelatorioController extends Controller
             $diasPresentes = 0;
 
             $acessosAluno = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
-                ->where('CRED_NUMERO', $aluno->credencial)
+                ->where('CRED_NUMERO', (int) $aluno->credencial)
                 ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
                 ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
                 ->get();

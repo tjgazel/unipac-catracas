@@ -11,11 +11,11 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <i class="far fa-id-card"></i> Credencial: {{$id}}
+                    <i class="far fa-id-card"></i> Credencial: {{sprintf("%012d", $id)}}
                 </li>
             </ol>
         </nav>
-        <form action="{{route('catracas.show', ['id' => $id])}}" method="get">
+        <form action="{{route('catracas.show', ['id' => sprintf("%012d", $id)])}}" method="get">
             <div class="form-row mb-3">
                 <div class="form-group col-12 col-md-4">
                     <label>Data inicial</label>
@@ -29,7 +29,7 @@
                             <button class="btn btn-outline-secondary" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
-                            <a href="{{route('catracas.show', ['id' => $id])}}" class="btn btn-outline-secondary"
+                            <a href="{{route('catracas.show', ['id' => sprintf("%012d", $id)])}}" class="btn btn-outline-secondary"
                                type="button">
                                 <i class="fas fa-eraser"></i>
                             </a>
