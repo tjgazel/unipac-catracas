@@ -27,7 +27,7 @@ class CatracasRelatorioController extends Controller
             'search' => $request->get('search') ?? '',
         ]);
 
-        $http = new Client();
+        /*$http = new Client();
         try {
             $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
                 'query' => [
@@ -41,15 +41,22 @@ class CatracasRelatorioController extends Controller
             throw new \Exception($e->getMessage());
         }
 
-        $diasLetivos = $response->dias;
+        $diasLetivos = $response->dias;*/
 
         if (strlen($form['search']) > 1) {
             $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->orderBy('nome')->get();
+            foreach($alunos as $aluno){
+                $acessos[] = $aluno->getAcessos;
+            }
         } else {
             $alunos = Aluno::orderBy('nome')->get();
+            $acessos = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
+                ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
+                ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
+                ->get();
         }
 
-        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
+        /*$alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
             $diasPresentes = 0;
 
             $acessosAluno = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
@@ -77,11 +84,13 @@ class CatracasRelatorioController extends Controller
 
             return $aluno;
 
-        })->filter(function ($aluno){
+        })->filter(function ($aluno) {
             return $aluno->faltas_percentual >= 40;
-        })->sortByDesc('faltas');
+        })->sortByDesc('faltas');*/
 
-        return view('catracas.relatorios.index', compact(['alunos', 'form', 'diasLetivos']));
+        $data = [$alunos, $acessos];
+
+        return view('catracas.relatorios.index', compact(['data', 'form']));
     }
 
     /**

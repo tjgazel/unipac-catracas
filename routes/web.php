@@ -20,6 +20,8 @@ Route::redirect('/', 'catracas/relatorios', 302);
 Route::name('catracas')->resource('catracas/relatorios', 'CatracasRelatorioController')->only(['index', 'show']);
 Route::resource('catracas', 'CatracasController')->only(['index', 'show']);
 
+Route::get('/teste', 'CatracasRelatorioController@index');
+
 /*Route::name('calendarios.add-marcador')->post('calendarios/add-marcador', 'CalendarioController@addMarcador');
 Route::resource('calendarios', 'CalendarioController');
 Route::resource('marcadores', 'MarcadorController');*/

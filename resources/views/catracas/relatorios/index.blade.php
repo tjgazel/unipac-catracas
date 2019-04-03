@@ -38,14 +38,23 @@
                         </div>
                     </div>
                 </div>
-                <p class="col-12"><i class="far fa-calendar-check"></i> Dias letivos no período selecionado:
+                {{--<p class="col-12">
+                    <i class="far fa-calendar-check"></i> Dias letivos no período selecionado:
                     <strong>{{$diasLetivos}}</strong>
+                </p>--}}
             </div>
         </form>
 
         <h4 class="mb-3"><i class="fas fa-list"></i> Registros de alunos com alto indice de faltas</h4>
-        </p>
-        <div class="table-responsive">
+
+        <relatorios-index
+            data="{{$data}}"
+            url-calendario="http://unipacto.com.br/calendarios/diascalendario.php"
+            date-start="{{$form['start']->format('Y-m-d')}}"
+            date-end="{{$form['end']->format('Y-m-d')}}">
+        </relatorios-index>
+
+        {{--<div class="table-responsive">
             <table class="table table-sm table-hover">
                 <thead>
                 <tr>
@@ -84,7 +93,7 @@
                 @endif
                 </tbody>
             </table>
-        </div>
+        </div>--}}
     </div>
 
 @endsection

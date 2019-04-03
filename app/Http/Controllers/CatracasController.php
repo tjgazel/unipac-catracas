@@ -26,7 +26,8 @@ class CatracasController extends Controller
 
 
         if (strlen($form['search']) > 0) {
-            $credenciais = Credencial::whereDate('CRED_ULTPASSAGEM', '>=', $form['start']->format('Y-m-d'))
+            $credenciais = Credencial::where('CRED_BLOQUEADA', 0)
+                ->whereDate('CRED_ULTPASSAGEM', '>=', $form['start']->format('Y-m-d'))
                 ->whereDate('CRED_ULTPASSAGEM', '<=', $form['end']->format('Y-m-d'))
                 ->orderByDesc('CRED_ULTPASSAGEM')
                 ->get();
@@ -34,14 +35,15 @@ class CatracasController extends Controller
             $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->get();
             $credenciais_aluno = [];
             foreach ($alunos as $aluno) {
-                $credenciais_aluno[] = $aluno->credencial;
+                $credenciais_aluno[] = (int) $aluno->credencial;
             };
 
-            $credenciais = $credenciais->whereIn('CRED_NUMERO', $credenciais_aluno)->filter(function ($credencial){
+            $credenciais = $credenciais->whereIn('CRED_NUMERO', $credenciais_aluno)->filter(function ($credencial) {
                 return $credencial->getAluno ? true : false;
             });
         } else {
-            $credenciais = Credencial::whereDate('CRED_ULTPASSAGEM', '>=', $form['start']->format('Y-m-d'))
+            $credenciais = Credencial::where('CRED_BLOQUEADA', 0)
+                ->whereDate('CRED_ULTPASSAGEM', '>=', $form['start']->format('Y-m-d'))
                 ->whereDate('CRED_ULTPASSAGEM', '<=', $form['end']->format('Y-m-d'))
                 ->orderByDesc('CRED_ULTPASSAGEM')
                 ->paginate();
@@ -58,7 +60,6 @@ class CatracasController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $id = (int) $id;
         $start = $request->get('start');
         $end = $request->get('end');
         $form = [
@@ -66,7 +67,7 @@ class CatracasController extends Controller
             'end' => $end ?? Carbon::now()->format('Y-m-d')
         ];
 
-        $acessos = Acesso::where('CRED_NUMERO', $id)
+        $acessos = Acesso::where('CRED_NUMERO', (int)$id)
             ->whereDate('MOV_DATAHORA', '>=', $form['start'])
             ->whereDate('MOV_DATAHORA', '<=', $form['end'])
             ->orderByDesc('MOV_DATAHORA')

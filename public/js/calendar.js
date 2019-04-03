@@ -1,1 +1,19 @@
-$(document).ready(function(){JSON.parse($("#dadosCalendario").val()),JSON.parse($("#marcadores").val()).forEach(function(a){$("#marcadorId").append('<option class="'+a.classe+'" value="'+a.id+'">'+a.nome+"</option>")}),$(".calendar").click(function(){var a=$(this).attr("marcador-id"),o=$(this).attr("dia"),r=$(this).attr("dia-ano"),d=$(this).attr("mes"),t=$(this).attr("ano");$("#marcadorModalLabel").text("Inserir marcador no dia "+o+" de "+d+" de "+t),$("#marcadorId").val(a),$("#diaAno").val(r),$("#ano").val(t),$("#marcadorModal").modal("show")})});
+$(document).ready(function () {
+  var dadosCalendario = JSON.parse($('#dadosCalendario').val());
+  var marcadores = JSON.parse($('#marcadores').val());
+  marcadores.forEach(function (e) {
+    $('#marcadorId').append('<option class="' + e.classe + '" value="' + e.id + '">' + e.nome + '</option>');
+  });
+  $('.calendar').click(function () {
+    var marcadorId = $(this).attr('marcador-id');
+    var dia = $(this).attr('dia');
+    var diaAno = $(this).attr('dia-ano');
+    var mes = $(this).attr('mes');
+    var ano = $(this).attr('ano');
+    $('#marcadorModalLabel').text('Inserir marcador no dia ' + dia + ' de ' + mes + ' de ' + ano);
+    $('#marcadorId').val(marcadorId);
+    $('#diaAno').val(diaAno);
+    $('#ano').val(ano);
+    $('#marcadorModal').modal('show');
+  });
+});

@@ -16,6 +16,11 @@ class Aluno extends Model
 
     // credencial, id, nome, fixo, celular, periodo, curso
 
+    public function getCredencialAttribute($value)
+    {
+        return (int) $value;
+    }
+
     public function getCredencial()
     {
         return $this->hasOne(Credencial::class, 'CRED_NUMERO', 'credencial');
