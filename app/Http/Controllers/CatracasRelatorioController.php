@@ -46,17 +46,22 @@ class CatracasRelatorioController extends Controller
         if (strlen($form['search']) > 1) {
             $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")
                 ->orderBy('nome')
-                ->get();
+                ->paginate();
         } else {
-            $alunos = Aluno::orderBy('nome')->get();
+            $alunos = Aluno::orderBy('nome')->paginate();
         }
 
-        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
+        $alunos->getCollection()->transform(function ($aluno) use ($form, $diasLetivos) {
             $diasPresentes = 0;
 
-            $alunoAcesos = $aluno->getAcessos
+            /*$alunoAcesos = $aluno->getAcessos
                 ->where('MOV_DATAHORA', '>=', $form['start'])
-                ->where('MOV_DATAHORA', '<=', $form['end']);
+                ->where('MOV_DATAHORA', '<=', $form['end']);*/
+
+            $alunoAcesos = Acesso::where('CRED_NUMERO', (int) $aluno->credencial)
+                ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
+                ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
+                ->get();
 
             $diasAcesso = [];
 
@@ -77,9 +82,17 @@ class CatracasRelatorioController extends Controller
 
             return $aluno;
 
-        })->filter(function ($aluno) {
-            return $aluno->faltas_percentual >= 40;
-        })->sortByDesc('faltas');
+        });
+
+        $alunos->setCollection(
+            $alunos->getCollection()->sortByDesc('faltas')
+        );
+
+        $alunos->appends([
+            'start' => $form['start']->format('Y-m-d'),
+            'end' => $form['end']->format('Y-m-d'),
+            'search' => $form['search']
+        ]);
 
         return view('catracas.relatorios.index', compact(['alunos', 'form', 'diasLetivos']));
     }

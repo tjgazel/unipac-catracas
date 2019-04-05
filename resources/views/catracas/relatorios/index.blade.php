@@ -68,7 +68,7 @@
                 @if($alunos->count())
                     @foreach($alunos as $aluno)
                         <tr>
-                            <td class="align-middle">{{$aluno->credencial ?? ''}}</td>
+                            <td class="align-middle">{{sprintf("%012d", $aluno->credencial)}}</td>
                             <td class="align-middle">{{$aluno->nome ?? ''}}</td>
                             <td class="align-middle text-center">{{$aluno->periodo ?? ''}}</td>
                             <td class="align-middle">{{$aluno->curso ?? ''}}</td>
@@ -89,6 +89,9 @@
                 @endif
                 </tbody>
             </table>
+        </div>
+        <div class="text-center">
+            {{$alunos->links()}}
         </div>
     </div>
 
