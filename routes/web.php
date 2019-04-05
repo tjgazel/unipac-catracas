@@ -17,11 +17,9 @@
 
 Route::redirect('/', 'catracas/relatorios', 302);
 
-Route::name('catracas')->resource('catracas/relatorios', 'CatracasRelatorioController')->only(['index', 'show']);
+Route::name('catracas.relatorios.alunos')->get('catracas/relatorios/alunos', 'CatracasRelatorioController@alunos');
+Route::name('catracas.relatorios.acessos')->get('catracas/relatorios/acessos', 'CatracasRelatorioController@acessos');
+Route::name('catracas.relatorios.index2')->get('catracas/relatorios/index', 'CatracasRelatorioController@index2');
+Route::name('catracas.relatorios.index')->get('catracas/relatorios', 'CatracasRelatorioController@index');
+
 Route::resource('catracas', 'CatracasController')->only(['index', 'show']);
-
-Route::get('/teste', 'CatracasRelatorioController@index');
-
-/*Route::name('calendarios.add-marcador')->post('calendarios/add-marcador', 'CalendarioController@addMarcador');
-Route::resource('calendarios', 'CalendarioController');
-Route::resource('marcadores', 'MarcadorController');*/

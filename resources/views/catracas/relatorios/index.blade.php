@@ -38,23 +38,16 @@
                         </div>
                     </div>
                 </div>
-                {{--<p class="col-12">
+                <p class="col-12">
                     <i class="far fa-calendar-check"></i> Dias letivos no período selecionado:
                     <strong>{{$diasLetivos}}</strong>
-                </p>--}}
+                </p>
             </div>
         </form>
 
         <h4 class="mb-3"><i class="fas fa-list"></i> Registros de alunos com alto indice de faltas</h4>
 
-        <relatorios-index
-            data="{{$data}}"
-            url-calendario="http://unipacto.com.br/calendarios/diascalendario.php"
-            date-start="{{$form['start']->format('Y-m-d')}}"
-            date-end="{{$form['end']->format('Y-m-d')}}">
-        </relatorios-index>
-
-        {{--<div class="table-responsive">
+        <div class="table-responsive">
             <table class="table table-sm table-hover">
                 <thead>
                 <tr>
@@ -66,7 +59,9 @@
                     <th class="text-center"><i class="fas fa-mobile-alt"></i> Celular</th>
                     <th class="text-center" style="width: 100px;"><i class="far fa-calendar-times"></i> Faltas</th>
                     <th class="text-center" style="width: 100px;"><i class="fas fa-percent"></i> Faltas</th>
-                    <th class="text-center" style="width: 110px;"><i class="fas fa-history"></i> Histórico <br> de presença</th>
+                    <th class="text-center" style="width: 110px;"><i class="fas fa-history"></i> Histórico <br> de
+                        presença
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,15 +80,16 @@
                                 {{$aluno->faltas_percentual}}%
                             </td>
                             <td class="align-middle text-center">
-                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}"><i
-                                        class="far fa-paper-plane"></i></a>
+                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}">
+                                    <i class="far fa-paper-plane"></i>
+                                </a>
                             </td>
                         </tr>
                     @endforeach
                 @endif
                 </tbody>
             </table>
-        </div>--}}
+        </div>
     </div>
 
 @endsection

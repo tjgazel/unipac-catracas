@@ -27,7 +27,7 @@ class CatracasRelatorioController extends Controller
             'search' => $request->get('search') ?? '',
         ]);
 
-        /*$http = new Client();
+        $http = new Client();
         try {
             $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
                 'query' => [
@@ -41,41 +41,34 @@ class CatracasRelatorioController extends Controller
             throw new \Exception($e->getMessage());
         }
 
-        $diasLetivos = $response->dias;*/
+        $diasLetivos = $response->dias;
 
         if (strlen($form['search']) > 1) {
-            $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")->orderBy('nome')->get();
-            foreach($alunos as $aluno){
-                $acessos[] = $aluno->getAcessos;
-            }
+            $alunos = Aluno::where('nome', 'like', "%{$form['search']}%")
+                ->orderBy('nome')
+                ->get();
         } else {
             $alunos = Aluno::orderBy('nome')->get();
-            $acessos = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
-                ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
-                ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
-                ->get();
         }
 
-        /*$alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
+        $alunos = $alunos->map(function ($aluno) use ($form, $diasLetivos) {
             $diasPresentes = 0;
 
-            $acessosAluno = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
-                ->where('CRED_NUMERO', (int) $aluno->credencial)
-                ->whereDate('MOV_DATAHORA', '>=', $form['start']->format('Y-m-d'))
-                ->whereDate('MOV_DATAHORA', '<=', $form['end']->format('Y-m-d'))
-                ->get();
+            $alunoAcesos = $aluno->getAcessos
+                ->where('MOV_DATAHORA', '>=', $form['start'])
+                ->where('MOV_DATAHORA', '<=', $form['end']);
 
-            if (count($acessosAluno)) {
-                $diasAcesso = [];
-                foreach ($acessosAluno as $acesso) {
-                    if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
-                        $diasAcesso[] = $acesso->MOV_DATAHORA->dayOfYear;
-                        $diasPresentes += 1;
-                    }
+            $diasAcesso = [];
+
+            foreach ($alunoAcesos as $acesso) {
+                if (!in_array($acesso->MOV_DATAHORA->dayOfYear, $diasAcesso)) {
+                    $diasAcesso[] = $acesso->MOV_DATAHORA->dayOfYear;
+                    $diasPresentes += 1;
                 }
             }
 
             $aluno->faltas = $diasLetivos - $diasPresentes;
+
             if ($aluno->faltas > 0) {
                 $aluno->faltas_percentual = round($aluno->faltas / $diasLetivos * 100, 2);
             } else {
@@ -86,36 +79,75 @@ class CatracasRelatorioController extends Controller
 
         })->filter(function ($aluno) {
             return $aluno->faltas_percentual >= 40;
-        })->sortByDesc('faltas');*/
+        })->sortByDesc('faltas');
 
-        $data = [$alunos, $acessos];
-
-        return view('catracas.relatorios.index', compact(['data', 'form']));
+        return view('catracas.relatorios.index', compact(['alunos', 'form', 'diasLetivos']));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, $id)
+    public function index2(Request $request)
     {
-        $start = $request->get('start');
-        $end = $request->get('end');
+        $form = collect([
+            'start' => $request->get('start') ?
+                Carbon::createFromTimestamp(strtotime($request->get('start')))->format('Y-m-d') :
+                Carbon::now()->addDays(-16)->format('Y-m-d'),
+            'end' => $request->get('end') ?
+                Carbon::createFromTimestamp(strtotime($request->get('end')))->format('Y-m-d') :
+                Carbon::now()->format('Y-m-d'),
+            'search' => $request->get('search') ?? '',
+        ]);
 
-        $form = [
-            'start' => $start ?? Carbon::now()->firstOfMonth()->format('Y-m-d'),
-            'end' => $end ?? Carbon::now()->format('Y-m-d')
-        ];
+        $http = new Client();
+        try {
+            $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
+                'query' => [
+                    'i' => $form['start'],
+                    'f' => $form['end']
+                ]
+            ]);
 
-        $credAcessos = Acesso::where('CRED_NUMERO', $id)
-            ->whereDate('MOV_DATAHORA', '>=', $form['start'])
-            ->whereDate('MOV_DATAHORA', '<=', $form['end'])
-            ->orderByDesc('MOV_DATAHORA')
+            $response = json_decode($response->getBody()->getContents());
+        } catch (RequestException $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        $diasLetivos = $response->dias;
+
+        $urlDiasLetivos = 'http://unipacto.com.br/calendarios/diascalendario.php';
+
+        return view('catracas.relatorios.index2', compact(['form', 'diasLetivos']));
+    }
+
+    public function alunos(Request $request)
+    {
+        $search = $request->get('search');
+
+        if ($search && strlen($search) > 0) {
+            $alunos = Aluno::where('nome', 'like', "%{$search}%")
+                ->orderBy('nome')
+                ->get();
+        } else {
+            $alunos = Aluno::orderBy('nome')->get();
+        }
+
+        return response()->json($alunos);
+    }
+
+    public function acessos(Request $request)
+    {
+        $start = $request->get('start') ?
+            Carbon::createFromTimestamp(strtotime($request->get('start'))) :
+            Carbon::now()->addDays(-16);
+
+        $end = $request->get('end') ?
+            Carbon::createFromTimestamp(strtotime($request->get('end'))) :
+            Carbon::now();
+
+        $acessos = Acesso::select('CRED_NUMERO', 'MOV_DATAHORA')
+            ->whereDate('MOV_DATAHORA', '>=', $start->format('Y-m-d'))
+            ->whereDate('MOV_DATAHORA', '<=', $end->format('Y-m-d'))
             ->get();
 
-        return view('catracas.relatorios.show', compact(['credAcessos', 'form', 'id']));
+        return response()->json($acessos);
     }
+
 }
