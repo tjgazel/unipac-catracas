@@ -1,4 +1,4 @@
-@extends('template.default')
+@extends('layouts.default')
 @section('title', 'Registros diários catracas - ')
 @section('content')
     <div class="container">

@@ -1,4 +1,4 @@
-@extends('template.default')
+@extends('layouts.default')
 @section('title', ' Relatório de faltas - ')
 @section('content')
     <div class="container">
@@ -59,9 +59,7 @@
                     <th class="text-center"><i class="fas fa-mobile-alt"></i> Celular</th>
                     <th class="text-center" style="width: 100px;"><i class="far fa-calendar-times"></i> Faltas</th>
                     <th class="text-center" style="width: 100px;"><i class="fas fa-percent"></i> Faltas</th>
-                    <th class="text-center" style="width: 110px;"><i class="fas fa-history"></i> Histórico <br> de
-                        presença
-                    </th>
+                    <th class="text-center" style="width: 110px;">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -80,9 +78,13 @@
                                 {{$aluno->faltas_percentual}}%
                             </td>
                             <td class="align-middle text-center">
-                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}">
-                                    <i class="far fa-paper-plane"></i>
+                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}" class="btn btn-outline-secondary" title="Histórico de presença">
+                                    <i class="fas fa-history"></i>
                                 </a>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-{{$aluno->credencial}}">
+                                    <i class="fas fa-headset"></i>
+                                </button>
+                                @include('catracas.contatos.modal', ['aluno' => $aluno])
                             </td>
                         </tr>
                     @endforeach

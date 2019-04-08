@@ -13,7 +13,7 @@
 <body>
 
     <div id="app">
-        @include('template.menu')
+        @include('layouts.menu')
         @yield('content')
     </div>
 

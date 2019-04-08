@@ -15,8 +15,7 @@ class DatabaseSeeder extends Seeder
 //        DB::statement('SET FOREIGN_KEY_CHECKS=0;'); // mysql
         DB::statement('PRAGMA foreign_keys = OFF;'); // sqlite
 
-        // $this->call(UsersTableSeeder::class);
-        $this->call(MarcadoresSeeder::class);
+        $this->call(UsersTableSeeder::class);
 
 //        DB::statement('SET FOREIGN_KEY_CHECKS=1;'); // mysql
         DB::statement('PRAGMA foreign_keys = ON;'); //sqlite

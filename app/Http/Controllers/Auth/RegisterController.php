@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -37,36 +39,59 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+//        $this->middleware('guest');
+        $this->middleware('can:admin');
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
+        if (auth()->user()->tipo_usuario != 1) {
+            toastr()->error('Usuário sem permissão');
+
+            return redirect()->route('register');
+        }
+
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'cpf' => ['required', 'digits:11', 'unique:users'],
+            'tipo_usuario' => ['required'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\User
+     * @param  array $data
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'cpf' => $data['cpf'],
             'password' => Hash::make($data['password']),
+            'tipo_usuario' => $data['tipo_usuario']
         ]);
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  mixed $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        toastr()->success('Usuário cadastrado com sucesso!');
+
+        return redirect()->route('gerenciar-usuarios.index');
     }
 }
