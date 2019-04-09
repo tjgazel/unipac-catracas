@@ -97,40 +97,7 @@ class CatracasRelatorioController extends Controller
         return view('catracas.relatorios.index', compact(['alunos', 'form', 'diasLetivos']));
     }
 
-    public function index2(Request $request)
-    {
-        $form = collect([
-            'start' => $request->get('start') ?
-                Carbon::createFromTimestamp(strtotime($request->get('start')))->format('Y-m-d') :
-                Carbon::now()->addDays(-16)->format('Y-m-d'),
-            'end' => $request->get('end') ?
-                Carbon::createFromTimestamp(strtotime($request->get('end')))->format('Y-m-d') :
-                Carbon::now()->format('Y-m-d'),
-            'search' => $request->get('search') ?? '',
-        ]);
-
-        $http = new Client();
-        try {
-            $response = $http->get('http://unipacto.com.br/calendarios/diascalendario.php', [
-                'query' => [
-                    'i' => $form['start'],
-                    'f' => $form['end']
-                ]
-            ]);
-
-            $response = json_decode($response->getBody()->getContents());
-        } catch (RequestException $e) {
-            throw new \Exception($e->getMessage());
-        }
-
-        $diasLetivos = $response->dias;
-
-        $urlDiasLetivos = 'http://unipacto.com.br/calendarios/diascalendario.php';
-
-        return view('catracas.relatorios.index2', compact(['form', 'diasLetivos']));
-    }
-
-    public function alunos(Request $request)
+    /*public function alunos(Request $request)
     {
         $search = $request->get('search');
 
@@ -161,6 +128,6 @@ class CatracasRelatorioController extends Controller
             ->get();
 
         return response()->json($acessos);
-    }
+    }*/
 
 }

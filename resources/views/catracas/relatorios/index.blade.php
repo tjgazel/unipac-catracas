@@ -47,51 +47,11 @@
 
         <h4 class="mb-3"><i class="fas fa-list"></i> Registros de alunos com alto indice de faltas</h4>
 
-        <div class="table-responsive">
-            <table class="table table-sm table-hover">
-                <thead>
-                <tr>
-                    <th><i class="far fa-id-card"></i> Credencial</th>
-                    <th><i class="fas fa-user-graduate"></i> Aluno</th>
-                    <th class="text-center">Período</th>
-                    <th>Curso</th>
-                    <th class="text-center"><i class="fas fa-phone"></i> Fixo</th>
-                    <th class="text-center"><i class="fas fa-mobile-alt"></i> Celular</th>
-                    <th class="text-center" style="width: 100px;"><i class="far fa-calendar-times"></i> Faltas</th>
-                    <th class="text-center" style="width: 100px;"><i class="fas fa-percent"></i> Faltas</th>
-                    <th class="text-center" style="width: 110px;">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                @if($alunos->count())
-                    @foreach($alunos as $aluno)
-                        <tr>
-                            <td class="align-middle">{{sprintf("%012d", $aluno->credencial)}}</td>
-                            <td class="align-middle">{{$aluno->nome ?? ''}}</td>
-                            <td class="align-middle text-center">{{$aluno->periodo ?? ''}}</td>
-                            <td class="align-middle">{{$aluno->curso ?? ''}}</td>
-                            <td class="align-middle text-center">{{$aluno->fixo ?? ''}}</td>
-                            <td class="align-middle text-center">{{$aluno->celular ?? ''}}</td>
-                            <td class="align-middle text-center">{{$aluno->faltas ?? ''}} / {{$diasLetivos}}</td>
-                            <td class="align-middle text-center @if($aluno->faltas_percentual >= 40 && $aluno->faltas_percentual < 60)
-                                bg-warning @endif @if($aluno->faltas_percentual >= 60) bg-danger text-white @endif">
-                                {{$aluno->faltas_percentual}}%
-                            </td>
-                            <td class="align-middle text-center">
-                                <a href="{{route('catracas.show', ['id' => $aluno->credencial])}}" class="btn btn-outline-secondary" title="Histórico de presença">
-                                    <i class="fas fa-history"></i>
-                                </a>
-                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-{{$aluno->credencial}}">
-                                    <i class="fas fa-headset"></i>
-                                </button>
-                                @include('catracas.contatos.modal', ['aluno' => $aluno])
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
-        </div>
+        <vue-alunos-table
+            data-alunos="{{$alunos->getCollection()}}"
+            dias-letivos="{{$diasLetivos}}">
+        </vue-alunos-table>
+
         <div class="text-center">
             {{$alunos->links()}}
         </div>

@@ -19,7 +19,7 @@
                     <td>{{$usuario->cpf}}</td>
                     <td>{{$usuario->tipo_usuario == 1 ? 'Admin' : 'Usuário'}}</td>
                     <td>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('destroy-form{{$usuario->id}}').submit();"
+                        <a href="#" onclick="event.preventDefault(); if(confirm('Deseja excluir?')){ document.getElementById('destroy-form{{$usuario->id}}').submit();}"
                            class="btn btn-sm btn-outline-danger float-right">
                             <i class="fas fa-trash-alt"></i>
                         </a>

@@ -22,9 +22,37 @@ class GerenciarUsuariosController extends Controller
         return view('auth.gerenciar', compact(['usuarios']));
     }
 
+    public function create()
+    {
+        return view('auth.register');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'cpf' => ['required', 'digits:11', 'unique:users'],
+            'tipo_usuario' => ['required'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        $data = $request->all();
+
+        User::create([
+            'name' => $data['name'],
+            'cpf' => $data['cpf'],
+            'password' => Hash::make($data['password']),
+            'tipo_usuario' => $data['tipo_usuario']
+        ]);
+
+        toastr()->success('Usuário cadastrado com sucesso!');
+
+        return redirect()->route('gerenciar-usuarios.index');
+    }
+
     public function edit($id)
     {
-        $usuario = User::findOrFail($id);
+        $usuario = User::find($id);
 
         return view('auth.edit', compact('usuario'));
     }
@@ -42,7 +70,7 @@ class GerenciarUsuariosController extends Controller
 
         $data['password'] = Hash::make($data['password']);
 
-        User::findOrFail($id)->update($data);
+        User::find($id)->update($data);
 
         toastr()->success('Atualizado com sucesso');
 

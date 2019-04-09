@@ -8,17 +8,17 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
 
+                <li class="nav-item {{Route::currentRouteName() == 'catracas.index' ? 'active' : ''}}">
+                    <a class="nav-link" href="{{route('catracas.index')}}">
+                        <i class="fas fa-list"></i> Registros diários
+                    </a>
+                </li>
                 <li class="nav-item {{Route::currentRouteName() == 'catracas.relatorios.index' ? 'active' : ''}}">
                     <a class="nav-link" href="{{route('catracas.relatorios.index')}}">
                         <i class="far fa-chart-bar text-primary"></i> Relatórios de faltas
                     </a>
                 </li>
 
-                <li class="nav-item {{Route::currentRouteName() == 'catracas.index' ? 'active' : ''}}">
-                    <a class="nav-link" href="{{route('catracas.index')}}">
-                        <i class="fas fa-list"></i> Registros diários
-                    </a>
-                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
